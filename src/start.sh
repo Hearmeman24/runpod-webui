@@ -35,6 +35,8 @@ mv runpod-diffusion_pipe/video_captioner.sh /
 chmod +x runpod-webui/send_lora.sh
 mv runpod-webui/send_lora.sh /usr/local/bin
 
+git clone --recursive https://github.com/bmaltais/kohya_ss.git
+
 mkdir -p $NETWORK_VOLUME/image_dataset_here
 
 if [ "$download_base_sdxl" == "true" ]; then
@@ -58,7 +60,6 @@ if [ "$download_flux" == "true" ]; then
   echo "Finished downloading Flux"
 fi
 
-git clone --recursive https://github.com/bmaltais/kohya_ss.git
 cd kohya_ss
 ./setup-runpod.sh
 ./gui.sh --listen=0.0.0.0 --headless
