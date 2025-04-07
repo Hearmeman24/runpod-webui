@@ -27,8 +27,9 @@ else
     jupyter-lab --ip=0.0.0.0 --allow-root --no-browser --NotebookApp.token='' --NotebookApp.password='' --ServerApp.allow_origin='*' --ServerApp.allow_credentials=True --notebook-dir=/workspace &
 fi
 
-git clone https://github.com/oobabooga/text-generation-webui.git
-cd text-generation-webui
-GPU_CHOICE=A USE_CUDA118=FALSE LAUNCH_AFTER_INSTALL=TRUE INSTALL_EXTENSIONS=TRUE ./start_linux.sh
+git clone --recursive https://github.com/bmaltais/kohya_ss.git
+cd kohya_ss
+./setup-runpod.sh
+./gui.sh --listen=0.0.0.0 --headless
 
 sleep infinity
