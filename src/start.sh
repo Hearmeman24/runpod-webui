@@ -31,29 +31,9 @@ git clone https://github.com/Hearmeman24/runpod-diffusion_pipe.git
 mv runpod-diffusion_pipe/src/start.sh /
 mv runpod-diffusion_pipe/joy_caption_runner.sh /
 mv runpod-diffusion_pipe/video_captioner.sh /
-mkdir -p $NETWORK_VOLUME/image_dataset_here
 
-if [ "$download_wan13" == "true" ]; then
-  echo "Downloading Wan 1.3B model"
-  mkdir -p /Wan/Wan2.1-T2V-1.3B
-  huggingface-cli download Wan-AI/Wan2.1-T2V-1.3B --local-dir /Wan/Wan2.1-T2V-1.3B 2>&1 | tee download_log.txt
-  echo "Finished downloading Wan 1.3B model"
-
-fi
-
-if [ "$download_wan14B_t2v" == "true" ]; then
-  echo "Downloading Wan 14B model"
-  mkdir -p /Wan/Wan2.1-T2V-14B
-  huggingface-cli download Wan-AI/Wan2.1-T2V-14B --local-dir /Wan/Wan2.1-T2V-14B 2>&1 | tee download_log.txt
-  echo "Finished downloading Wan 14B model"
-fi
-
-if [ "$download_wan14B_i2v_480p" == "true" ]; then
-  echo "Downloading Wan 14B I2V model"
-  mkdir -p /Wan/Wan2.1-I2V-14B-480P
-  huggingface-cli download Wan-AI/Wan2.1-I2V-14B-480P --local-dir /Wan/Wan2.1-I2V-14B-480P 2>&1 | tee download_log.txt
-  echo "Finished downloading Wan 14B model"
-fi
+chmod +x runpod-webui/send_lora.sh
+mv runpod-webui/send_lora.sh /usr/local/bin
 
 if [ "$download_base_sdxl" == "true" ]; then
   echo "Downloading Base SDXL"
