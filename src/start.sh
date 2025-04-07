@@ -35,10 +35,12 @@ mv runpod-diffusion_pipe/video_captioner.sh /
 chmod +x runpod-webui/send_lora.sh
 mv runpod-webui/send_lora.sh /usr/local/bin
 
+mkdir -p $NETWORK_VOLUME/image_dataset_here
+
 if [ "$download_base_sdxl" == "true" ]; then
   echo "Downloading Base SDXL"
   mkdir -p $NETWORK_VOLUME/models
-  huggingface-cli download timoshishi/sdXL_v10VAEFix sdXL_v10VAEFix.safetensors --local-dir $NETWORK_VOLUME/models 2>&1 | tee download_log.txt
+  huggingface-cli download timoshishi/sdXL_v10VAEFix sdXL_v10VAEFix.safetensors --local-dir $NETWORK_VOLUME/kohya_ss/models 2>&1 | tee download_log.txt
   echo "Finished downloading base SDXL"
 fi
 

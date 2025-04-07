@@ -68,7 +68,7 @@ echo "Copying images from dataset directory to joycaption dir (the devs made a m
 find /image_dataset_here -type f -exec mv {} $INPUT_DIR \;
 python $SCRIPT_PATH
 echo "captioning complete"
-find $INPUT_DIR -type f -exec mv {} /image_dataset_here \;
+find $INPUT_DIR -type f -exec mv {} /$OUTPUT_DIR \;
 
 echo "Script execution completed successfully."
 echo "The conda environment '$CONDA_ENV_NAME' is preserved for future use."

@@ -18,20 +18,31 @@ if [ ${#safetensors_files[@]} -eq 0 ]; then
     exit 1
 fi
 
-# Display found .safetensors files
+# Display found .safetensors files with numbers
 echo "Found the following .safetensors files:"
-for file in "${safetensors_files[@]}"; do
-    echo "$file"
+for i in "${!safetensors_files[@]}"; do
+    echo "[$i] ${safetensors_files[$i]}"
 done
+
+# Prompt the user to select a file
+echo -n "Enter the number of the file you want to process: "
+read file_index
+
+# Validate input
+if ! [[ "$file_index" =~ ^[0-9]+$ ]] || [ "$file_index" -ge ${#safetensors_files[@]} ]; then
+    echo "Invalid selection. Please enter a number between 0 and $((${#safetensors_files[@]}-1))."
+    exit 1
+fi
+
+# Get the selected file
+file_to_rename="${safetensors_files[$file_index]}"
+echo "You selected: $file_to_rename"
 
 # Prompt the user for the epoch number
 echo -n "Enter the epoch number: "
 read epoch_number
 
-# Get the first .safetensors file found
-file_to_rename="${safetensors_files[0]}"
-
-# Rename the first file to epoch_<user_inputted_number>.safetensors
+# Rename the selected file to epoch_<user_inputted_number>.safetensors
 new_name="epoch_${epoch_number}.safetensors"
 mv "$file_to_rename" "$new_name"
 
