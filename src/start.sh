@@ -27,6 +27,59 @@ else
     jupyter-lab --ip=0.0.0.0 --allow-root --no-browser --NotebookApp.token='' --NotebookApp.password='' --ServerApp.allow_origin='*' --ServerApp.allow_credentials=True --notebook-dir=/workspace &
 fi
 
+git clone https://github.com/Hearmeman24/runpod-diffusion_pipe.git
+mv runpod-diffusion_pipe/src/start.sh /
+mv runpod-diffusion_pipe/joy_caption_runner.sh /
+mv runpod-diffusion_pipe/video_captioner.sh /
+
+if [ "$download_wan13" == "true" ]; then
+  mv $NETWORK_VOLUME/wan13_video.toml $NETWORK_VOLUME/diffusion_pipe/examples
+  echo "Downloading Wan 1.3B model"
+  mkdir -p /Wan/Wan2.1-T2V-1.3B
+  huggingface-cli download Wan-AI/Wan2.1-T2V-1.3B --local-dir /Wan/Wan2.1-T2V-1.3B 2>&1 | tee download_log.txt
+  echo "Finished downloading Wan 1.3B model"
+
+fi
+
+if [ "$download_wan14B_t2v" == "true" ]; then
+  mv $NETWORK_VOLUME/wan14b_t2v.toml $NETWORK_VOLUME/diffusion_pipe/examples
+  echo "Downloading Wan 14B model"
+  mkdir -p /Wan/Wan2.1-T2V-14B
+  huggingface-cli download Wan-AI/Wan2.1-T2V-14B --local-dir /Wan/Wan2.1-T2V-14B 2>&1 | tee download_log.txt
+  echo "Finished downloading Wan 14B model"
+fi
+
+if [ "$download_wan14B_i2v_480p" == "true" ]; then
+  mv $NETWORK_VOLUME/wan14b_i2v.toml $NETWORK_VOLUME/diffusion_pipe/examples
+  echo "Downloading Wan 14B I2V model"
+  mkdir -p /Wan/Wan2.1-I2V-14B-480P
+  huggingface-cli download Wan-AI/Wan2.1-I2V-14B-480P --local-dir /Wan/Wan2.1-I2V-14B-480P 2>&1 | tee download_log.txt
+  echo "Finished downloading Wan 14B model"
+fi
+
+if [ "$download_base_sdxl" == "true" ]; then
+  mv $NETWORK_VOLUME/sdxl.toml $NETWORK_VOLUME/diffusion_pipe/examples
+  echo "Downloading Base SDXL"
+  mkdir -p $NETWORK_VOLUME/models
+  huggingface-cli download timoshishi/sdXL_v10VAEFix sdXL_v10VAEFix.safetensors --local-dir $NETWORK_VOLUME/models 2>&1 | tee download_log.txt
+  echo "Finished downloading base SDXL"
+fi
+
+
+if [ "$download_flux" == "true" ]; then
+  if [ -z "$HUGGING_FACE_TOKEN" ] || [ "$HUGGING_FACE_TOKEN" == "token_here" ]; then
+    echo "Error: HUGGING_FACE_TOKEN is set to the default value 'token_here' or doesn't exist. Please update it in RunPod's environment variables or set it on your own."
+    exit 1
+  fi
+
+  echo "HUGGING_FACE_TOKEN is set."
+  mv $NETWORK_VOLUME/flux.toml $NETWORK_VOLUME/diffusion_pipe/examples
+  echo "Downloading Flux"
+  mkdir -p $NETWORK_VOLUME/models/flux
+  huggingface-cli download black-forest-labs/FLUX.1-dev --local-dir /models/flux --repo-type model --token "$HUGGING_FACE_TOKEN" 2>&1 | tee download_log.txt
+  echo "Finished downloading Flux"
+fi
+
 git clone --recursive https://github.com/bmaltais/kohya_ss.git
 cd kohya_ss
 ./setup-runpod.sh
